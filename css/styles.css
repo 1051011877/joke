@@ -1,0 +1,36 @@
+body
+{
+  font-size: 3rem;
+}
+.button{
+  color:Green;
+  width:10rem;
+  height:5.2rem;
+  font-size:3rem;
+  background-color:Gold;
+}
+.button1{
+  color:Green;
+  width:15rem;
+  height:5.2rem;
+  font-size:3rem;
+  background-color:Gold;
+}
+.text{
+  font-size:3rem;
+  width:40%;
+  height:5rem;
+ border-color:Black;
+}
+.text1{
+  font-size:3rem;
+  width:8rem;
+  height:5rem;
+ border-color:Black;
+ text-align:center;
+ 
+}
+.time{
+  color:Gray;
+  font-size:2.4rem
+}

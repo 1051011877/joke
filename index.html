@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="css/styles.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="./js/scripts.js"></script>
+  </head>
+  <body>
+    <p style="text-align:center;font-size:4rem;color:GreenYellow">笑破肚皮</p>
+	<!--<button class="button" onclick="a()">原生</button>-->
+	<div id="app">
+	        <div style="text-align:center">
+	              <input id="text" v-model="text" class="text" type="text" >
+			  <button class="button" @click="bt">搜索</button>
+			  <button class="button1" @click="sj">随机笑话</button>
+			  <div v-if="show==(key+1)" v-for="(value, key) in message" v-blind:key="key">
+				<p>{{ key+1 }}, {{ value.text}}</p>
+				<a :href="value.video"  >
+				  <img :src="value.thumbnail">
+				</a>
+				<img width=50%  height=50%   :src="value.header">
+				<p v-if="value.name">@{{ value.name}}</p>
+				<p class="time">{{value.passtime}}</p>
+			  </div>
+			  <div  v-if="message">
+				<sapn style="color:blue;" @click="change(1)">上一个</sapn>
+				<input  class="text1" type="text" v-model="show">
+				<span style="color:blue" @click="change(2)">下一个</span>
+				<span>共{{message.length}}个</span>
+				<br><br><br>
+			  </div>
+	        </div>
+	 </div>
+<script>
+var app = new Vue({
+	el: '#app',
+	data: {
+	text:"",
+    message: "",
+	show:1,
+	},
+	 methods: {
+	   change:function(i){
+	         if(i==1){
+		         if(this.show==1){
+		             this.show=1;
+			         return false;
+		         }
+		         this.show=this.show-1;
+		 }else{
+		         if(this.show==this.message.length){
+		               this.show=this.message.length;
+			         return false;
+		           }
+		 this.show=this.show+1;
+		 }
+	   },
+        bt: function () {
+		var api="https://api.apiopen.top/getJoke?page=1&count=2&type=video";
+        //this.message =parseInt(this.message)+1;
+		this.post(1,2,api);
+       },
+	   sj:function(){
+	       var api="https://api.apiopen.top/getJoke";
+		   this.post(1,2,api);
+	   },
+	  
+post:function(value,value2,api){
+    //debugger;
+    console.log("value",value);
+    console.log("value2",value2);
+     // 发送ajax
+         // （1） 获取 XMLHttpRequest对象
+         xmlHttp = new XMLHttpRequest();
+    var array = [
+    {
+          "type/String/":"尴尬",
+          "sjcc": value
+        }
+    ];
+    console.log("array ",array);
+         //  (2) 连接服务器
+        //  get
+        //xmlHttp.open("get","/sendAjax/?a=1&b=2");
+        //  post
+        xmlHttp.open("post",api);
+
+        // 设置请求头的Content-Type
+        var ele_csrf=document.getElementsByName("csrfmiddlewaretoken")[0];
+        xmlHttp.setRequestHeader("Content-Type","application/json");
+        //xmlHttp.setRequestHeader("X-CSRFToken",ele_csrf.value);
+
+        // （3） 发送数据
+        console.log("array2",array);
+        xmlHttp.send(JSON.stringify(array)) ;   // 请求体数据
+
+        // （4） 回调函数  success
+	    let _this=this;
+        xmlHttp.onreadystatechange = function() {
+            if(this.status==200){
+			  var data;
+			  eval("data="+this.responseText);//json字符串转object
+			  _this.message=data.result;
+            }
+        };   
+}
+  }
+  
+	});
+</script>
+  </body>
+</html>		
